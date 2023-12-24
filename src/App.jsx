@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import WeatherCard from "./WeatherCard";
+import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [city, setCity] = useState("");
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `https://api.weatherapi.com/v1/current.json?key=f84deeec27c34f30968122821232509&q=${city}`
+      );
+      setData(res.data);
+      setLoading(false);
+    } catch (error) {
+      alert("Failed to fetch weather data");
+    }
+    
+  };
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ minHeight: "100vh" }}>
+      <input
+        type="text"
+        value={city}
+        onChange={(e) => setCity(e.target.value)}
+      />
+      <button onClick={() => fetchData()}>Search</button>
+      {!loading ? (
+        data && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "1rem",
+              flexWrap: "wrap",
+              margin: "4rem 0rem",
+            }}
+          >
+            <WeatherCard
+              factor={"Temperature"}
+              value={`${data.current.temp_c}℃`}
+            />
+            <WeatherCard
+              factor={"Humidity"}
+              value={`${data.current.humidity}%`}
+            />
+            <WeatherCard
+              factor={"Condition"}
+              value={`${data.current.condition.text}`}
+            />
+            <WeatherCard
+              factor={"Wind Speed"}
+              value={`${data.current.wind_kph} kph`}
+            />
+          </div>
+        )
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
