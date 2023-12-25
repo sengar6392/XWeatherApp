@@ -28,11 +28,13 @@ function App() {
         type="text"
         value={city}
         onChange={(e) => setCity(e.target.value)}
+        placeholder="Enter city name"
       />
       <button onClick={() => fetchData()}>Search</button>
       {!loading ? (
         data && (
           <div
+            className="weather-cards"
             style={{
               display: "flex",
               justifyContent: "center",
