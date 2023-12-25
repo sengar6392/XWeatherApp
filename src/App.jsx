@@ -7,7 +7,7 @@ function App() {
   const [city, setCity] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const fetchData = async () => {
+  const getWeather = async () => {
     setLoading(true);
     try {
       const res = await axios.get(
@@ -16,7 +16,7 @@ function App() {
       setData(res.data);
       setLoading(false);
     } catch (error) {
-      alert("Failed to fetch weather data");
+      alert('Failed to fetch weather data');
     }
     
   };
@@ -30,7 +30,7 @@ function App() {
         onChange={(e) => setCity(e.target.value)}
         placeholder="Enter city name"
       />
-      <button onClick={() => fetchData()}>Search</button>
+      <button onClick={() => getWeather()}>Search</button>
       {!loading ? (
         data && (
           <div
@@ -63,7 +63,7 @@ function App() {
           </div>
         )
       ) : (
-        <p>Loading...</p>
+        <p>Loading data...</p>
       )}
     </div>
   );
