@@ -41,7 +41,7 @@ const WeatherDisplay = ({ city }) => {
       axios
         .get(`https://api.weatherapi.com/v1/current.json`, {
           params: {
-            key: "f84deeec27c34f30968122821232509",
+            key: "cf6cae627141447e9e6113102230410",
             q: city
           }
         })
